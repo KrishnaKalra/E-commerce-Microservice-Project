@@ -8,7 +8,7 @@ COPY constants/ ./constants/
 # Copy package files and install dependencies
 COPY email_service/package*.json ./email_service/
 WORKDIR /usr/src/app/email_service
-RUN npm ci
+RUN npm install
 
 # Copy service source code
 COPY email_service/ ./
