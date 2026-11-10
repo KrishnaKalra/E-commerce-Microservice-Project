@@ -15,7 +15,7 @@ const emitInventoryReserved = async (user, orderId) => {
         topic: EVENTS.INVENTORY_RESERVED,
         messages: [{ 
             value: JSON.stringify({ orderId }), 
-            headers: { 'x-user': JSON.stringify(user) }
+            headers: { 'x-user': JSON.stringify(user || {}) }
         }]
     });
 };
@@ -25,7 +25,7 @@ const emitReservationFailed = async (user, orderId) => {
         topic: EVENTS.RESERVATION_FAILED,
         messages: [{ 
             value: JSON.stringify({ orderId }), 
-            headers: { 'x-user': JSON.stringify(user) }
+            headers: { 'x-user': JSON.stringify(user || {}) }
         }]
     });
 };

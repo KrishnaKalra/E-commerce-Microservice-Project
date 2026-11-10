@@ -26,7 +26,7 @@ const connectConsumer = async () => {
             let user = null;
             // 2. Extract, decode, and parse the full user object from the header
             console.log(topic);
-            if (message.headers["x-user"]) {
+            if (message.headers && message.headers["x-user"]) {
                 try {
                     const userString = message.headers["x-user"].toString();
                     user = JSON.parse(userString);

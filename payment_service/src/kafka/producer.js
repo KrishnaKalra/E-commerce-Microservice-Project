@@ -14,7 +14,7 @@ const emitPaymentVerified = async (user, orderData) => {
         topic: EVENTS.PAYMENT_VERIFIED,
         messages: [{ 
             value: JSON.stringify(orderData),
-            headers: { 'x-user': JSON.stringify(user) }
+            headers: { 'x-user': JSON.stringify(user || {}) }
         }]
     });
 };
@@ -24,7 +24,7 @@ const emitPaymentFailed = async (user, orderData) => {
         topic: EVENTS.PAYMENT_FAILED,
         messages: [{ 
             value: JSON.stringify(orderData),
-            headers: { 'x-user': JSON.stringify(user) }
+            headers: { 'x-user': JSON.stringify(user || {}) }
         }]
     });
 };
