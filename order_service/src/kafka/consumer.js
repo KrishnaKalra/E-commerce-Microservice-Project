@@ -38,22 +38,26 @@ const connectConsumer = async () => {
                 if (topic === EVENTS.INVENTORY_RESERVED) {
                     const id = event.orderId;
                     let inventoryStatus = "RESERVED";
-                    await OrderService.updateOrderStatus(user,id, { inventoryStatus });
-                } else if(topic === EVENTS.PAYMENT_VERIFIED) {
+                    await OrderService.updateOrderStatus(user, id, { inventoryStatus });
+                } else if (topic === EVENTS.PAYMENT_VERIFIED) {
                     const id = event.orderId;
                     const paymentStatus = "VERIFIED";
-                    console.log('hi payment');
-                    await OrderService.updateOrderStatus(user,id, { paymentStatus });
-                    //console.log("ack");
+                    console.log('Payment verified for order:', id);
+                    await OrderService.updateOrderStatus(user, id, { paymentStatus, status: "CONFIRMED" });
                 } else if (topic === EVENTS.RESERVATION_FAILED) {
                     const id = event.orderId;
-                    let inventoryStatus = "FAILED";
-                    await OrderService.updateOrderStatus(user,id, { inventoryStatus });
+                    console.log('Inventory reservation failed or expired for order:', id);
+                    await OrderService.updateOrderStatus(user, id, { 
+                        status: "CANCELLED", 
+                        inventoryStatus: "FAILED" 
+                    });
                 } else if (topic === EVENTS.PAYMENT_FAILED) {
                     const id = event.orderId;
-                    const paymentStatus = "FAILED";
-                    await OrderService.updateOrderStatus(user,id, { paymentStatus });
-                    //console.log("ack");
+                    console.log('Payment failed for order:', id);
+                    await OrderService.updateOrderStatus(user, id, { 
+                        status: "CANCELLED", 
+                        paymentStatus: "FAILED" 
+                    });
                 }
             } catch (error) {
                 console.log(error);

@@ -51,22 +51,29 @@ export const updateOrderById = async (user, id, updateData) => {
     });
 };
 export const updateOrderStatus = async (user, id, updateData) => {
-    const { paymentStatus, inventoryStatus, shipmentStatus } = updateData;
+    const { status, paymentStatus, inventoryStatus, shipmentStatus } = updateData;
     const updatedData = await prisma.$transaction(async (tx) => {
         const currentOrder = await tx.order.findUnique({ where: { id } });
+        if (!currentOrder) return null;
+        if (status) currentOrder.status = status;
         if (paymentStatus) currentOrder.paymentStatus = paymentStatus;
         if (inventoryStatus) currentOrder.inventoryStatus = inventoryStatus;
         if (shipmentStatus) currentOrder.shipmentStatus = shipmentStatus;
         const data = await tx.order.update({
             where: { id },
-            data: { paymentStatus: currentOrder.paymentStatus, inventoryStatus: currentOrder.inventoryStatus, shipmentStatus: currentOrder.shipmentStatus },
+            data: { 
+                status: currentOrder.status,
+                paymentStatus: currentOrder.paymentStatus, 
+                inventoryStatus: currentOrder.inventoryStatus, 
+                shipmentStatus: currentOrder.shipmentStatus 
+            },
         });
         return data;
     });
     if (paymentStatus === "VERIFIED") {
         emitOrderConfirmed(user, updatedData);
     }
-    if (paymentStatus === "FAILED" || inventoryStatus === "FAILED") {
+    if (paymentStatus === "FAILED" || inventoryStatus === "FAILED" || status === "CANCELLED" || status === "FAILED") {
         emitOrderFailed(user, updatedData);
     }
     return updatedData;
