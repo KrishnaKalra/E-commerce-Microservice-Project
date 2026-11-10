@@ -4,7 +4,7 @@ import { verifyPayment } from '../service/payement.service.js';
 
 const kafka = new Kafka({
     clientId: 'payment-service',
-    brokers: ['localhost:9092']
+    brokers: [process.env.KAFKA_BROKER || 'localhost:9092']
 });
 
 const consumer = kafka.consumer({

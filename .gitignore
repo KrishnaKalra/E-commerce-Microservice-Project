@@ -1,0 +1,18 @@
+# Environment files (secrets - never commit)
+.env
+.env.*
+!.env.example
+
+# Private keys (NEVER commit - only public keys are safe to share)
+**/keys/private.pem
+
+# OS files
+.DS_Store
+**/.DS_Store
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+

@@ -3,7 +3,7 @@ import * as OrderService from "../service/order.service.js";
 import EVENTS from "../../../constants/event.js";
 const kafka = new Kafka({
     clientId: "order-service",
-    brokers: ["localhost:9092"],
+    brokers: [process.env.KAFKA_BROKER || "localhost:9092"],
 });
 
 const consumer = kafka.consumer({

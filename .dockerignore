@@ -1,0 +1,45 @@
+# Version control
+.git
+.gitignore
+
+# Dependencies (rebuilt inside Docker)
+**/node_modules
+
+# Environment files (secrets)
+.env
+.env.*
+!.env.example
+
+# Build artifacts
+**/dist
+**/build
+
+# Logs
+**/*.log
+**/logs
+
+# IDE / Editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.yaml
+docker-compose.override.yaml
+
+# Docs / misc
+README.md
+LICENSE
+*.md
+
+# Kubernetes
+k8s/
+
+# Generated Prisma client (regenerated during build)
+**/src/generated
+
