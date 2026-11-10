@@ -30,7 +30,6 @@ export const findOrdersByUser = async (user) => {
         where: { createdBy: user.id },
         orderBy: {
             createdAt: "desc",
-            createdBy: user.id,
         },
     });
 };

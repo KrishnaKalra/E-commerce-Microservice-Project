@@ -21,6 +21,9 @@ const createUser = async (req, res) => {
         console.log(newUser);
         
         let token = {
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
             user: {
                 id: newUser.id, 
                 email: newUser.email,

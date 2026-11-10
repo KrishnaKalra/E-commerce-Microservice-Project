@@ -20,7 +20,7 @@ const authMiddleware = async (req, res, next) => {
     }
     try {
         const user = jwt.verify(token, config.JWT_PUBLIC_KEY, { algorithms: ['RS256'], issuer: 'auth-microservice' });
-        req.user = user;
+        req.user = user.user ? { ...user.user, ...user, id: user.id || user.user.id } : user;
         console.log(req.user);
         next();
     }

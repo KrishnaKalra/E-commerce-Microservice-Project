@@ -16,7 +16,19 @@ export const createInventory = async (productId, user) => {
     });
 };
 
-export const addInventoryStock = async (productId, addedStock) => {
+export const addInventoryStock = async (productId, user, addedStock) => {
+    const existing = await prisma.productInventory.findUnique({
+        where: { productId },
+    });
+
+    if (!existing) {
+        throw new Error("NOT_FOUND");
+    }
+
+    if (user && existing.createdBy !== user.id) {
+        throw new Error("FORBIDDEN");
+    }
+
     return await prisma.productInventory.update({
         where: { productId },
         data: {

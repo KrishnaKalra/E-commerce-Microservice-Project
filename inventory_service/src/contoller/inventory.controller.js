@@ -73,6 +73,7 @@ export const createProductInventory = async (req, res) => {
 export const updateProductInventory = async (req, res) => {
     const { addedStock } = req.body; 
     const productId = req.params.productId;
+    const user = req.user;
 
     if (!productId || typeof addedStock !== 'number') {
         return res.status(400).json({
@@ -82,7 +83,7 @@ export const updateProductInventory = async (req, res) => {
     }
 
     try {
-        const updatedInventory = await InventoryService.addInventoryStock(productId, addedStock);
+        const updatedInventory = await InventoryService.addInventoryStock(productId, user, addedStock);
 
         return res.status(200).json({
             status: "success",
@@ -90,7 +91,13 @@ export const updateProductInventory = async (req, res) => {
         });
 
     } catch (error) {
-        if (error.code === 'P2025') {
+        if (error.message === "FORBIDDEN") {
+            return res.status(403).json({
+                status: "fail",
+                message: "You are not authorized to update inventory for this product.",
+            });
+        }
+        if (error.message === "NOT_FOUND" || error.code === 'P2025') {
             return res.status(404).json({
                 status: "fail",
                 message: "Inventory record not found for this Product ID.",
